@@ -1,0 +1,28 @@
+name: 'Deployment'
+
+on:
+  push:
+    branches:
+    - 'main'
+
+jobs:
+  job_id:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - uses: 'actions/checkout@v3'
+
+    - name: 'Auth to GCP'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+    - name: 'deploy to GCP'
+      uses: 'google-github-actions/deploy-cloud-functions@v1'
+      with:
+        name: ${{ secrets.CLOUD_FUNCTION_NAME }}
+        runtime: 'nodejs16'
