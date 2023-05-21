@@ -20,4 +20,5 @@ jobs:
       uses: 'google-github-actions/deploy-cloud-functions@v1'
       with:
         name: ${{ secrets.CLOUD_FUNCTION_NAME }}
+        entry_point: 'attendance'
         runtime: 'nodejs16'
